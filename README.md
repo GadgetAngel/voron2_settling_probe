@@ -76,7 +76,7 @@ This extension adds a sample to the very beginning of the probing sequence.  If 
 
 This extension does not do any checking to ensure that when you probe the bed you are over the bed surface.  So ensure you place the tool head in the appropriate location.
 
-The `PROBE_Z_ACCURACY` and `CALIBRATE_Z` will move the tool head to the correct locations because the (`Auto-Z-calibate` plugin)[https://github.com/protoloft/klipper_z_calibration] does that as part of its Klipper extension.
+The `PROBE_Z_ACCURACY` and `CALIBRATE_Z` will move the tool head to the correct locations because the [`Auto-Z-calibate` plugin](https://github.com/protoloft/klipper_z_calibration) does that as part of its Klipper extension.
 
 ---
 ## How to enable ``z_v2settling_probe`` on your Klipper 3D printer:
@@ -97,7 +97,7 @@ To enable the module, add the following to your `printer.cfg` file:
 The module also augments the `PROBE`, `PROBE_ACCURACY`, and `PROBE_CALIBRATE`, `QUAD_GANTRY_LEVEL`, `BED_MESH_CALIBRATE`,`PROBE_Z_ACCURACY`, and `CALIBRATE_Z` commands with an extra parameter - `SETTLING_SAMPLE` - which can be used to
 control whether the commands perform a settling sample independently of the`settling_sample` setting in the configuration section `[z_v2settling_probe]`.  If your printer does not use `QUAD_GANTRY_LEVEL` this extension will still work.
 
-The extension will only augment the commands that apply for your type of printer.  If you do not use (`Auto-Z-Calbration` plugin)[https://github.com/protoloft/klipper_z_calibration] for your Voron Printer, the extension will not load that part of the extension that deals with the `PROBE_Z_ACCURACY`command and the `CALIBRATE_Z` command.
+The extension will only augment the commands that apply for your type of printer.  If you do not use [`Auto-Z-Calbration` plugin](https://github.com/protoloft/klipper_z_calibration) for your Voron Printer, the extension will not load that part of the extension that deals with the `PROBE_Z_ACCURACY`command and the `CALIBRATE_Z` command.
 
 All you will see is a message in your klippy.log file saying that the `PROBE_Z_ACCURACY`command and the `CALIBRATE_Z` commands will not be available for your printer.
 
