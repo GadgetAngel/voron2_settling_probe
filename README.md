@@ -70,6 +70,15 @@ Especially when it comes to performing BED_MESH_CALIBRATE!
 ---
 ## BEFORE you install ``z_v2settling_probe`` on your Klipper 3D printer, do the following:
 
+>:bulb: NOTE:
+> Do not install both my version and @voidtrance version!  Use only ONE!
+
+>:bulb: NOTE:
+> Use either my version called ``[z_v2settling_probe]`` with the file ``z_v2settling_probe.py``
+>
+> or use @voidtrance version which is called ``settling_probe`` with the file ``settling_probe.py``
+>
+
 This extension does not add the ability to attach your Klicky probe/ Euclid probe to your tool head.  It also is not responsible for docking your Klicky probe/ Euclid probe.  You need to ensure that your probe is working, I mean you can do a BED_MESH_CALIBRATE, your homing procedure `G28` and your leveling procedure (QGL or BED_TILT_ADJUST).
 
 This extension adds a sample to the very beginning of the probing sequence.  If you need to have the probe attached then you are responsible for writing the Macros that will allow the probe to attach automatically and docked automatically for each of the following commands.
