@@ -217,6 +217,8 @@ is_system_service: False
 managed_services: klipper
 ```
 
+After you update `moonraker.conf` file, I reboot my Raspberry Pi to get it to install.
+
 This requires this repository to be cloned into your home directory (e.g. /home/pi):
 
 ```BASH
