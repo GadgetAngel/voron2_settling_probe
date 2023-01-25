@@ -182,7 +182,7 @@ settling_sample = True
 
 Now restart the Klipper service by going to the upper right-hand side corner of Mainsail UI and click on the Power Button symbol.  Take your mouse and click on the curved arrow next to the word `Klipper` to restart the Klipper service.
 
---- 
+---
 
 ### Additional Files:
 
