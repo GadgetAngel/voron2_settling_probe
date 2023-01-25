@@ -201,6 +201,32 @@ In this GitHub Repo I have added two additional files, so you can see what my se
 
 ---
 
+---
+### Moonraker Update Manager:
+
+It's possible to keep this extension up to date with the Moonraker's update manager by adding this configuration block to the "moonraker.conf" of your printer:
+
+```python
+
+[update_manager z_v2settling_probe]
+type: git_repo
+path: ~/voron2_settling_probe
+origin: https://github.com/GadgetAngel/voron2_settling_probe.git
+install_script: install-v2settling_probe.sh
+is_system_service: False
+managed_services: klipper
+```
+
+This requires this repository to be cloned into your home directory (e.g. /home/pi):
+
+```BASH
+git clone https://github.com/GadgetAngel/voron2_settling_probe.git
+```
+
+The URL for Moonraker ``[update_manager]`` section can be found [here](https://moonraker.readthedocs.io/en/latest/configuration/#update_manager)
+
+---
+
 Now, you are free to try out the following commands:
 
 ```BASH
