@@ -200,8 +200,6 @@ In this GitHub Repo I have added two additional files, so you can see what my se
 >:point_up: NOTE: These are for reference only. DO NOT load them onto your 3D printer!
 
 ---
-
----
 ### Moonraker Update Manager:
 
 It's possible to keep this extension up to date with the Moonraker's update manager by adding this configuration block to the "moonraker.conf" of your printer:
