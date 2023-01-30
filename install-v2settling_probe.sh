@@ -38,6 +38,7 @@ function verify_ready() {
         echo "This script must not run as root"
         exit -1
     fi
+    check_klipper
 }
 
 while getopts "k:" arg; do
