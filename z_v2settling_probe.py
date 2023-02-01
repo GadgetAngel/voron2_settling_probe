@@ -8,6 +8,7 @@
 
 from .probe import PrinterProbe as PrinterProbe
 import pins
+import configparser
 from .z_calibration import ZCalibrationHelper as ZCalibrationHelper
 import logging
 
@@ -15,12 +16,13 @@ class V2SettlingProbe(PrinterProbe):
     def __init__(self, config):
         self.printer = config.get_printer()
         probe_config = config.getsection('probe')
-        probe_obj = self.printer.lookup_object('probe')
-
-        if probe_obj:
+        
+        try:
+            probe_obj = self.printer.lookup_object('probe')
             mcu_probe = probe_obj.mcu_probe
-        else:
-            mcu_probe = probe.ProbeEndstopWrapper(config)
+        except configparser.Error:
+            raise configparser.Error(
+                "Section 'z_v2settling_probe' should appear after 'probe' section")
 
         #figure out a way to determine which type of printer we are running on
         #only call __init__ for z_v2settling_probe extension for the correct type of printer
@@ -49,11 +51,12 @@ class V2SettlingProbe(PrinterProbe):
         gcode.register_command('PROBE_CALIBRATE', None)
         gcode.register_command('PROBE_ACCURACY', None)
         gcode.register_command('Z_OFFSET_APPLY_PROBE', None)
-
+        
+        # Remove the already-registered 'probe' pin. It will be
+        # replaced by this instance.
         pins = self.printer.lookup_object('pins')
-        if 'probe' in pins.chips:
-            pins.chips.pop('probe')
-            pins.pin_resolvers.pop('probe')
+        pins.chips.pop('probe')
+        pins.pin_resolvers.pop('probe')
 
         PrinterProbe.__init__(self, probe_config, mcu_probe)
         self.settling_sample = config.getboolean('settling_sample', False)
