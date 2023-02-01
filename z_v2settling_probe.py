@@ -6,12 +6,12 @@
 # This file may be distributed under the terms of the GNU GPLv3 license.
 #
 
-from .probe import PrinterProbe as probe_PrinterProbe
+from .probe import PrinterProbe as PrinterProbe
 import pins
-from .z_calibration import ZCalibrationHelper as z_calibration_ZCalibrationHelper
+from .z_calibration import ZCalibrationHelper as ZCalibrationHelper
 import logging
 
-class V2SettlingProbe(probe_PrinterProbe):
+class V2SettlingProbe(PrinterProbe):
     def __init__(self, config):
         self.printer = config.get_printer()
         probe_config = config.getsection('probe')
@@ -55,7 +55,7 @@ class V2SettlingProbe(probe_PrinterProbe):
             pins.chips.pop('probe')
             pins.pin_resolvers.pop('probe')
 
-        probe_PrinterProbe.__init__(self, probe_config, mcu_probe)
+        PrinterProbe.__init__(self, probe_config, mcu_probe)
         self.settling_sample = config.getboolean('settling_sample', False)
         self.printer.register_event_handler("klippy:ready", self.handle_ready)
 
@@ -81,19 +81,19 @@ class V2SettlingProbe(probe_PrinterProbe):
         self._move(pos, lift_speed)
 
     def run_probe(self, gcmd):
-    # The following use self.run_probe : probe_PrinterProbe.cmd_PROBE; probe_PrinterProbe.cmd_PROBE_CALIBRATE;
+    # The following use self.run_probe : PrinterProbe.cmd_PROBE; PrinterProbe.cmd_PROBE_CALIBRATE;
     # and probe.ProbePointsHelper.start_probe
         if gcmd.get_int("SETTLING_SAMPLE", self.settling_sample):
             self._run_settling_probe(gcmd)
-        return probe_PrinterProbe.run_probe(self, gcmd)
+        return PrinterProbe.run_probe(self, gcmd)
 
     def cmd_PROBE_ACCURACY(self, gcmd):
-    # the probe_PrinterProbe.cmd_PROBE_ACCURACY calls self._probe(speed) not self.run_probe(gcmd)
+    # the PrinterProbe.cmd_PROBE_ACCURACY calls self._probe(speed) not self.run_probe(gcmd)
         if gcmd.get_int("SETTLING_SAMPLE", self.settling_sample):
             self._run_settling_probe(gcmd)
-        return probe_PrinterProbe.cmd_PROBE_ACCURACY(self, gcmd)
+        return PrinterProbe.cmd_PROBE_ACCURACY(self, gcmd)
 
-class V2SettlingZCalibrationHelper(z_calibration_ZCalibrationHelper):
+class V2SettlingZCalibrationHelper(ZCalibrationHelper):
     def __init__(self, config):
         self.printer = config.get_printer()
         z_calibration_config = config.getsection('z_calibration')
@@ -102,7 +102,7 @@ class V2SettlingZCalibrationHelper(z_calibration_ZCalibrationHelper):
         self.gcode = self.printer.lookup_object('gcode')
         self.gcode.register_command('CALIBRATE_Z', None)
         self.gcode.register_command('PROBE_Z_ACCURACY', None)
-        z_calibration_ZCalibrationHelper.__init__(self, z_calibration_config)
+        ZCalibrationHelper.__init__(self, z_calibration_config)
         self.printer.register_event_handler("klippy:ready", self.handle_ready)
 
     def handle_ready(self):
@@ -147,16 +147,16 @@ class V2SettlingZCalibrationHelper(z_calibration_ZCalibrationHelper):
         global_first_fast = self.first_fast
         if global_first_fast:
             self._message_first_fast(gcmd)
-            return z_calibration_ZCalibrationHelper.cmd_CALIBRATE_Z(self, gcmd)
+            return ZCalibrationHelper.cmd_CALIBRATE_Z(self, gcmd)
         cmd_CALIBRATE_Z_settling_sample = gcmd.get_int("SETTLING_SAMPLE", self.settling_sample)
         # if first_fast is True than the first sample is already discarded!
         if cmd_CALIBRATE_Z_settling_sample:
             self.first_fast = True
             gcmd.respond_info("Settling sample (ignored)...for each probe location [endstop, switch body, and bed] ...")
-            ret = z_calibration_ZCalibrationHelper.cmd_CALIBRATE_Z(self, gcmd)
+            ret = ZCalibrationHelper.cmd_CALIBRATE_Z(self, gcmd)
             self.first_fast = False
         else:
-            return z_calibration_ZCalibrationHelper.cmd_CALIBRATE_Z(self, gcmd)
+            return ZCalibrationHelper.cmd_CALIBRATE_Z(self, gcmd)
 
     def cmd_PROBE_Z_ACCURACY(self, gcmd):
         speed = gcmd.get_float("PROBE_SPEED", self.second_speed, above=0.)
@@ -166,7 +166,7 @@ class V2SettlingZCalibrationHelper(z_calibration_ZCalibrationHelper):
             gcmd.respond_info("Settling sample (ignored)...")
             #self._probe() does a probe and a retract
             pos = self._probe(self.z_endstop, self.position_min, speed)
-        return z_calibration_ZCalibrationHelper.cmd_PROBE_Z_ACCURACY(self, gcmd)
+        return ZCalibrationHelper.cmd_PROBE_Z_ACCURACY(self, gcmd)
 
 def load_config(config):
     try:
