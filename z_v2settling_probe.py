@@ -6,17 +6,17 @@
 # This file may be distributed under the terms of the GNU GPLv3 license.
 #
 
-from .probe import PrinterProbe as PrinterProbe
+from .probe import PrinterProbe
 import pins
 import configparser
-from .z_calibration import ZCalibrationHelper as ZCalibrationHelper
+from .z_calibration import ZCalibrationHelper
 import logging
 
 class V2SettlingProbe(PrinterProbe):
     def __init__(self, config):
         self.printer = config.get_printer()
         probe_config = config.getsection('probe')
-        
+
         try:
             probe_obj = self.printer.lookup_object('probe')
             mcu_probe = probe_obj.mcu_probe
@@ -51,7 +51,7 @@ class V2SettlingProbe(PrinterProbe):
         gcode.register_command('PROBE_CALIBRATE', None)
         gcode.register_command('PROBE_ACCURACY', None)
         gcode.register_command('Z_OFFSET_APPLY_PROBE', None)
-        
+
         # Remove the already-registered 'probe' pin. It will be
         # replaced by this instance.
         pins = self.printer.lookup_object('pins')
@@ -72,6 +72,12 @@ class V2SettlingProbe(PrinterProbe):
         probe_obj = self.printer.objects.pop('probe', None)
         self.printer.objects['probe'] = self
         del probe_obj
+        pheaters = self.printer.lookup_object('heaters')
+        heater_dict = pheaters.get_all_heaters()
+        logging.info("V2SettlingProbe on behalf of zero_overshoot_heater_bed ::INFO:: all_heaters = %s" % (heater_dict))
+        extruder_obj = self.printer.lookup_object('extruder', None)
+        logging.info("V2SettlingProbe on behalf of zero_overshoot_heater_bed ::INFO:: self.printer.lookup_object('extruder', None) = %s" % (extruder_obj))
+
 
     def _run_settling_probe(self, gcmd):
         gcmd.respond_info("Settling sample (ignored)...")
