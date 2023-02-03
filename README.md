@@ -92,7 +92,7 @@ The `PROBE_Z_ACCURACY` and `CALIBRATE_Z` will move the tool head to the correct 
 
 To enable the module, add the following to your `printer.cfg` file:
 
-```BASH
+```INI
 [z_v2settling_probe]
 #settling_sample:
 #   Globally enable the throw-away settling sample. Default is 'False'.
@@ -116,12 +116,12 @@ All you will see is a message in your klippy.log file saying that the `PROBE_Z_A
 
 You have two ways you can install this `z_v2settling_probe` extension (manually or via an installation script)
 
-Here is the manual install instruction:
+1. Here is the manual install instruction:
 
-1. Write down the location of the following directories:
+0. Write down the location of the following directories:
     * Klipper Extras: Usually located at `/home/USER/klipper/klippy/extras`.
-2. Download `z_v2settling_probe.py` file.
-3. Download the `Z_V2SETTLING_PROBE.cfg` and include it into your printer.cfg file.
+1. Download `z_v2settling_probe.py` file.
+2. Download the `Z_V2SETTLING_PROBE.cfg` and include it into your printer.cfg file.
 3. Move `z_v2settling_probe.py` to your Klipper Extras folder (home/pi/klipper/klippy/extras).
 4. Restart Klipper service and do a `FIRMWARE RESTART` command if needed
 
@@ -144,23 +144,13 @@ sudo systemctl restart klipper
 
 ### Here is the installation script method:
 
-Perform the following commands at your Raspberry Pi command prompt:
-
-1. Download the file `Z_V2SETTLING_PROBE.cfg` and place it in the same folder as you `printer.cfg` file.  Now add
-a `[include Z_V2SETTLING_PROBE.cfg]` to your `printer.cfg` file.
-
-You could also just type in the following straight into your `printer.cfg` file, but typos can cause errors.
-
-```BASH
-[z_v2settling_probe]
-settling_sample = True
-```
+2. Here is the script method:
 
 >:bulb: NOTE:
 > If you install the extension before you create the`[z_v2settling_probe]` section with the option `settling_sample: True`
 > Klipper will NOT load the extension when you restart Klipper.
 
-2. Install the ``z_v2settling_probe` extension to Klipper, please run the following commands:
+Install the `z_v2settling_probe` extension to Klipper, please run the following commands:
 ```BASH
 cd /home/pi
 ```
@@ -178,7 +168,7 @@ First you must create the `[z_v2settling_probe]` section in your printer.cfg fil
 
 Here are the contents of `Z_V2SETTLING_PROBE.cfg` file:
 
-```python
+```INI
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # Z_V2SETTLING_PROBE Setup
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -204,7 +194,7 @@ In this GitHub Repo I have added two additional files, so you can see what my se
 
 It's possible to keep this extension up to date with the Moonraker's update manager by adding this configuration block to the "moonraker.conf" of your printer:
 
-```python
+```INI
 
 [update_manager z_v2settling_probe]
 type: git_repo
