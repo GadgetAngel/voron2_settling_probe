@@ -72,11 +72,6 @@ class V2SettlingProbe(PrinterProbe):
         probe_obj = self.printer.objects.pop('probe', None)
         self.printer.objects['probe'] = self
         del probe_obj
-        pheaters = self.printer.lookup_object('heaters')
-        heater_dict = pheaters.get_all_heaters()
-        logging.info("V2SettlingProbe on behalf of zero_overshoot_heater_bed ::INFO:: all_heaters = %s" % (heater_dict))
-        extruder_obj = self.printer.lookup_object('extruder', None)
-        logging.info("V2SettlingProbe on behalf of zero_overshoot_heater_bed ::INFO:: self.printer.lookup_object('extruder', None) = %s" % (extruder_obj))
 
 
     def _run_settling_probe(self, gcmd):
